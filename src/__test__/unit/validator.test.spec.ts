@@ -3,30 +3,22 @@ import { isValidEmail } from "../../utils/validator.js";
 describe("isValidEmail", () => {
   test("should return false for a non-string input", () => {
     expect(isValidEmail(123 as any)).toBe(false);
+    expect(isValidEmail(null as any)).toBe(false);
+    expect(isValidEmail(undefined as any)).toBe(false);
+    expect(isValidEmail({} as any)).toBe(false);
+    expect(isValidEmail([] as any)).toBe(false);
   });
 
-  it("returns true for a valid email", () => {
-    expect(isValidEmail("user@example.com")).toBe(true);
-  });
-
-  it("returns false for an email missing @", () => {
-    expect(isValidEmail("userexample.com")).toBe(false);
-  });
-
-  it("returns false for an email missing domain", () => {
+  test("should return false for a invalid email string", () => {
+    expect(isValidEmail("not-an-email")).toBe(false);
     expect(isValidEmail("user@")).toBe(false);
+    expect(isValidEmail("@domain.com")).toBe(false);
+    expect(isValidEmail("user@domain")).toBe(false);
+    expect(isValidEmail("user@domain.")).toBe(false);
   });
 
-  it("returns false for an email missing TLD", () => {
-    expect(isValidEmail("user@example")).toBe(false);
-  });
-
-  it("returns false for an empty string", () => {
-    expect(isValidEmail("")).toBe(false);
-  });
-
-  it("returns false for a non-string input", () => {
-    // @ts-expect-error testing invalid input type
-    expect(isValidEmail(null)).toBe(false);
+  test("should return true for a valid email string", () => {
+    expect(isValidEmail("myat@gmail.com")).toBe(true);
+    expect(isValidEmail("myat.su@gmail.com.mm")).toBe(true);
   });
 });
