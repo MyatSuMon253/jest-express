@@ -11,7 +11,7 @@ describe("POST /users", () => {
 
   describe("success path", () => {
     beforeEach(async () => {
-      (UserService.create as jest.Mock).mockReturnValue(createdUser);
+      (UserService.create as jest.Mock).mockResolvedValue(createdUser);
     });
 
     test("should return 201 and created user", async () => {
@@ -26,6 +26,22 @@ describe("POST /users", () => {
 
       expect(UserService.create).toHaveBeenCalledTimes(1);
       expect(UserService.create).toHaveBeenCalledWith(userInput);
+    });
+  });
+
+  describe("service error - DB error", () => {
+    beforeEach(async () => {
+      (UserService.create as jest.Mock).mockRejectedValue(new Error("DB down"));
+    });
+
+    test("should return 500 with a generic error message", async () => {
+      const res = await request(app)
+        .post("/users")
+        .send(userInput)
+        .set("Accept", "application/json");
+
+      expect(res.status).toBe(500);
+      expect(res.body).toEqual({ error: "user creation failed" });
     });
   });
 });
