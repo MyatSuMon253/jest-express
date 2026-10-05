@@ -60,5 +60,27 @@ describe("POST /users", () => {
       expect(res.body).toHaveProperty("error", "name is required");
       expect(UserService.create).not.toHaveBeenCalled();
     });
+
+    test("should return 400 when email is missing", async () => {
+      const res = await request(app)
+        .post("/users")
+        .send({ name: "Bob" })
+        .set("Accept", "application/json");
+
+      expect(res.status).toBe(400);
+      expect(res.body).toHaveProperty("error", "email is required");
+      expect(UserService.create).not.toHaveBeenCalled();
+    });
+
+    test("should return 400 when email is invalid", async () => {
+      const res = await request(app)
+        .post("/users")
+        .send({ name: "Bob", email: "bob11gmail" })
+        .set("Accept", "application/json");
+
+      expect(res.status).toBe(400);
+      expect(res.body).toHaveProperty("error", "email is invalid");
+      expect(UserService.create).not.toHaveBeenCalled();
+    });
   });
 });
