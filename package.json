@@ -10,7 +10,8 @@
     "test": "jest",
     "test:unit": "jest --testPathPatterns=__test__/unit",
     "test:integration": "jest --testPathPatterns=__test__/integration",
-    "test:e2e": "jest --testPathPatterns=__test__/e2e"
+    "test:e2e": "jest --testPathPatterns=__test__/e2e",
+    "postinstall": "prisma skills sync || exit 0"
   },
   "keywords": [],
   "author": "",
@@ -27,8 +28,10 @@
     "@babel/preset-typescript": "^7.29.7",
     "@types/express": "^5.0.6",
     "@types/jest": "^30.0.0",
+    "@types/node": "^26.6.4",
     "@types/supertest": "^7.2.1",
     "nodemon": "^3.1.14",
+    "prisma": "^8.0.0-rc.19",
     "ts-node": "^10.9.2",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2"
